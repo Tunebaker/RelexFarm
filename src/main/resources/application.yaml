@@ -1,0 +1,14 @@
+server:
+  port: 8082
+jwt:
+  secret: ebon990erb098bre0
+  lifetime: 10m
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/farm
+    username: postgres
+    password: 12
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: true
+
