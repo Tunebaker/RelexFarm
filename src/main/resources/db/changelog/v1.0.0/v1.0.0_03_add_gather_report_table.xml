@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+  <changeSet id="v1.0.0_03_add_gather_report_table" author="Andrey Gurinov">
+    <createSequence sequenceName="gather_report_id_sequence" schemaName="data"/>
+    <createTable tableName="gather_report" schemaName="data">
+      <column name="id" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="varchar(255)"/>
+      <column name="product_id" type="bigint"/>
+      <column name="user_id" type="bigint"/>
+      <column name="quantity" type="float"/>
+      <column name="date_time" type="timestamp"/>
+    </createTable>
+    <addDefaultValue tableName="gather_report" schemaName="data" columnName="id" defaultValueSequenceNext="gather_report_id_sequence"/>
+  </changeSet>
+
+</databaseChangeLog>

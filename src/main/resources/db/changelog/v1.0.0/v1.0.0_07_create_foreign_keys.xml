@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+  <changeSet id="v1.0.0_07_create_foreign_keys" author="Andrey Gurinov">
+    <addForeignKeyConstraint baseTableSchemaName="data"
+                             baseTableName="gather_report"
+                             baseColumnNames="user_id"
+                             constraintName="user_id_fk"
+                             referencedTableSchemaName="data"
+                             referencedTableName="user"
+                             referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableSchemaName="data"
+                             baseTableName="daily_norm"
+                             baseColumnNames="user_id"
+                             constraintName="user_id_fk"
+                             referencedTableSchemaName="data"
+                             referencedTableName="user"
+                             referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableSchemaName="data"
+                             baseTableName="worker_rating"
+                             baseColumnNames="user_id"
+                             constraintName="user_id_fk"
+                             referencedTableSchemaName="data"
+                             referencedTableName="user"
+                             referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableSchemaName="data"
+                             baseTableName="gather_report"
+                             baseColumnNames="product_id"
+                             constraintName="product_id_fk"
+                             referencedTableSchemaName="data"
+                             referencedTableName="product"
+                             referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableSchemaName="data"
+                             baseTableName="daily_norm"
+                             baseColumnNames="product_id"
+                             constraintName="product_id_fk"
+                             referencedTableSchemaName="data"
+                             referencedTableName="product"
+                             referencedColumnNames="id"/>
+    <addForeignKeyConstraint baseTableSchemaName="data"
+                             baseTableName="user"
+                             baseColumnNames="role_id"
+                             constraintName="role_id_fk"
+                             referencedTableSchemaName="data"
+                             referencedTableName="role"
+                             referencedColumnNames="id"/>
+  </changeSet>
+
+</databaseChangeLog>
