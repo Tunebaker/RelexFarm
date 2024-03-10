@@ -5,10 +5,17 @@ jwt:
   lifetime: 10m
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/farm
-    username: postgres
+    url: jdbc:postgresql://localhost:54321/relex_farm
+    username: tunebaker
     password: 12
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  liquibase:
+    change-log: db/changelog/db.changelog-master.xml
 
