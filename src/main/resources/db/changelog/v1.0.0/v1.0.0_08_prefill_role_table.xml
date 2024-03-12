@@ -6,11 +6,9 @@
 
   <changeSet id="v1.0.0_08_prefill_role_table" author="Andrey Gurinov">
     <insert tableName="role" schemaName="data">
-<!--    <column name="meter_type_id" value="1"/>-->
       <column name="name" value="ADMIN"/>
     </insert>
     <insert tableName="role" schemaName="data">
-<!--      <column name="meter_type_id" value="2"/>-->
       <column name="name" value="WORKER"/>
     </insert>
   </changeSet>

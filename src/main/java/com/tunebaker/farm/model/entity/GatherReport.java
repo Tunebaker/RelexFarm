@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "gather_report")
 public class GatherReport {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime dateTime;
     private Float quantity;

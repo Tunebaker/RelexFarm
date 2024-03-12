@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @Table(name = "worker_rating")
 public class WorkerRating {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Float rating;
     private Long userId;
     private LocalDateTime dateTime;

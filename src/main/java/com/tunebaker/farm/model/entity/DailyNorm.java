@@ -12,8 +12,8 @@ import lombok.Data;
 @Table(name = "daily_norm")
 public class DailyNorm {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private Long productId;
     private Long userId;
     private Float norm;

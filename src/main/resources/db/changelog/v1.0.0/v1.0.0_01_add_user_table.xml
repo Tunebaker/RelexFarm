@@ -5,9 +5,8 @@
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
 
   <changeSet id="v1.0.0_01_add_user_table" author="Andrey Gurinov">
-    <createSequence sequenceName="user_id_sequence" schemaName="data"/>
     <createTable tableName="user" schemaName="data">
-      <column name="id" type="bigint">
+      <column name="id" autoIncrement="true" type="bigint">
         <constraints primaryKey="true" nullable="false"/>
       </column>
       <column name="first_name" type="varchar(50)"/>
@@ -18,7 +17,6 @@
       <column name="role_id" type="int"/>
       <column name="status" type="varchar(30)"/>
     </createTable>
-    <addDefaultValue tableName="user" schemaName="data" columnName="id" defaultValueSequenceNext="user_id_sequence"/>
   </changeSet>
 
 </databaseChangeLog>
