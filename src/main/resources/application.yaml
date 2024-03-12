@@ -16,6 +16,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_schema: data
   liquibase:
     change-log: db/changelog/db.changelog-master.xml
+    default-schema: public
 
