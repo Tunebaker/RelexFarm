@@ -12,9 +12,13 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 @Entity
 @Data
+@NoArgsConstructor
+@Accessors(chain = true)
 @Table(name = "user")
 public class User {
     @Id
