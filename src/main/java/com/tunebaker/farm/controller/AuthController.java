@@ -25,7 +25,7 @@ public class AuthController {
 
     @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody AuthDto authDto) {
-        log.info("Received auth request with email: {}", authDto.getEmail());
+        log.info("Получен запрос на авторизацию с email: {}", authDto.getEmail());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(authDto.getEmail(), authDto.getPassword()));
 
