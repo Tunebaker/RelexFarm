@@ -1,6 +1,5 @@
 package com.tunebaker.farm.model.entity;
 
-import com.tunebaker.farm.model.enums.ActivityStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
