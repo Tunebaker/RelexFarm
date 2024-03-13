@@ -2,7 +2,7 @@ server:
   port: 8082
 jwt:
   secret: ebon990erb098bre0
-  lifetime: 10m
+  lifetime: 72h
 spring:
   datasource:
     url: jdbc:postgresql://localhost:54321/relex_farm
