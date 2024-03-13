@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,6 +22,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String PATH_PREFIX = "/api/v1";
+    private static final String ADMIN = "ADMIN";
+    private static final String WORKER = "WORKER";
     private final UserService userService;
     private final JwtTokenFilter jwtTokenFilter;
     private final PasswordEncoder passwordEncoder;
@@ -31,11 +33,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                    .cors(CorsConfigurer::disable)
-                   .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth")
-                                                      .permitAll()
-                                                      .requestMatchers("/api/v1/**")
-//                                                      .authenticated()
-                                                      .hasRole("ADMIN")
+                   .authorizeHttpRequests(auth -> auth
+                                                      .requestMatchers(PATH_PREFIX + "/**").permitAll()
+//                                                      .requestMatchers(PATH_PREFIX + "/auth").permitAll()
+//                                                      .requestMatchers(PATH_PREFIX + "/manage-user/**").hasRole(ADMIN)
+//                                                      .requestMatchers(PATH_PREFIX + "/**/new").hasRole(ADMIN)
+//                                                      .requestMatchers(PATH_PREFIX + "/gather-report/add").hasRole(WORKER)
                                                       )
                    .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                    .build();
