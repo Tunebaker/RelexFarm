@@ -1,6 +1,7 @@
 package com.tunebaker.farm.controller;
 
-import com.tunebaker.farm.model.dto.RatingDto;
+import com.tunebaker.farm.model.dto.WorkerRatingDto;
+import com.tunebaker.farm.service.WorkerRatingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,20 +20,23 @@ import java.util.List;
 @RequestMapping("/api/v1/rating")
 @RequiredArgsConstructor
 @Slf4j
-public class RatingController {
+public class WorkerRatingController {
+
+    private final WorkerRatingService workerRatingService;
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("/new")
-    public ResponseEntity<?> addRating(@RequestBody RatingDto ratingDto) {
-        log.info("ratingDto received: {}", ratingDto);
+    public ResponseEntity<?> addRating(@RequestBody WorkerRatingDto workerRatingDto) {
+        log.info("workerRatingDto received: {}", workerRatingDto);
+        workerRatingService.addRating(workerRatingDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PreAuthorize("hasAnyRole('WORKER', 'ADMIN')")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<RatingDto>> getRating(@PathVariable long userId) {
+    public ResponseEntity<List<WorkerRatingDto>> getRating(@PathVariable long userId) {
         log.info("Rating requested for user id={}", userId);
-        List<RatingDto> ratingDtos = null;
-        return ResponseEntity.ok(ratingDtos);
+        List<WorkerRatingDto> workerRatingDtos = workerRatingService.getRating(userId);
+        return ResponseEntity.ok(workerRatingDtos);
     }
 }

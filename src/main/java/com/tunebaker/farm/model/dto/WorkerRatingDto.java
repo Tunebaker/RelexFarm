@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 @Getter
 @ToString
-public class RatingDto {
+public class WorkerRatingDto {
     private final float rating;
     private final long userId;
     private final LocalDateTime dateTime;
 
-    public RatingDto(float rating, long userId) {
+    public WorkerRatingDto(float rating, long userId) {
         this.rating = rating;
         this.userId = userId;
         this.dateTime = LocalDateTime.now();
