@@ -23,7 +23,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class UserServiceImpl implements UserService {
 
     private static final String USER_NOT_FOUND = "Пользователь с email '%s' не найден";
     private static final String DEFAULT_ROLE = "ROLE_WORKER";
