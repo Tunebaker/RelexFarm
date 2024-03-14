@@ -3,11 +3,14 @@ package com.tunebaker.farm.exception;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,6 +22,8 @@ public class GlobalExceptionHandler {
             case DataIntegrityViolationException ex -> status = 400;
             case UserAlreadyExistsException ex -> status = 400;
             case PasswordsNotEqualException ex -> status = 400;
+            case InternalAuthenticationServiceException ex -> status = 403;
+            case NoSuchElementException ex -> status = 400;
             default -> status = 500;
         }
 

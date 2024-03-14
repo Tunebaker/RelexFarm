@@ -2,6 +2,7 @@ package com.tunebaker.farm.service;
 
 import com.tunebaker.farm.exception.PasswordsNotEqualException;
 import com.tunebaker.farm.exception.UserAlreadyExistsException;
+import com.tunebaker.farm.exception.UserDismissedException;
 import com.tunebaker.farm.model.dto.RegisterUserDto;
 import com.tunebaker.farm.model.entity.User;
 import com.tunebaker.farm.model.enums.ActivityStatus;
@@ -9,15 +10,14 @@ import com.tunebaker.farm.model.mapper.UserMapper;
 import com.tunebaker.farm.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Service
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         User user = findByEmail(email);
         log.info("Найден пользователь: {}", user);
         if(user.getStatus().equals(ActivityStatus.DISMISSED)) {
-            throw new DisabledException("Пользователь отключён");
+            throw new UserDismissedException("Пользователь отключён");
         }
         return new org.springframework.security.core.userdetails.User(email, user.getPassword(),
                 Set.of(new SimpleGrantedAuthority(user.getRole().getName())));
@@ -63,5 +63,13 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UserAlreadyExistsException("Пользователь с таким email уже зарегистрирован");
         }
+    }
+
+    @Override
+    public void dismiss(long userId) {
+        User user =
+                userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("Пользователь не найден"));
+        user.setStatus(ActivityStatus.DISMISSED);
+        userRepository.save(user);
     }
 }

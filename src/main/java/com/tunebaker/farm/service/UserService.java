@@ -9,4 +9,5 @@ public interface UserService extends UserDetailsService {
 
     void createNewUser(RegisterUserDto userDto);
 
+    void dismiss(long userId);
 }

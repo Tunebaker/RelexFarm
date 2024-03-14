@@ -32,6 +32,7 @@ public class UserController {
     @PatchMapping("/dismiss/{userId}")
     public ResponseEntity<?> dismissUser(@PathVariable (name = "userId") long userId) {
         log.info("Запрошено увольнение работника с id = {}", userId);
+        userService.dismiss(userId);
         return ResponseEntity.ok().build();
     }
 }
