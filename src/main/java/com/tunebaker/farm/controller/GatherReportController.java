@@ -1,6 +1,8 @@
 package com.tunebaker.farm.controller;
 
+import com.tunebaker.farm.model.dto.GatherDto;
 import com.tunebaker.farm.model.dto.GatherReportDto;
+import com.tunebaker.farm.service.GatherReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,18 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class GatherReportController {
 
-    @PreAuthorize("hasAnyRole('WORKER')")
+    private final GatherReportService gatherReportService;
+
+    @PreAuthorize("hasAnyRole('WORKER', 'ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<?> addReport(@RequestBody GatherReportDto gatherReportDto) {
         log.info("GatherReportDto received: {}", gatherReportDto);
-        // возвращать сколько осталось до нормы
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        GatherDto gatherDto = gatherReportService.postGatherReport(gatherReportDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(gatherDto);
     }
 
     @PreAuthorize("hasAnyRole('WORKER', 'ADMIN')")
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getDayResult(@PathVariable long userId) {
-        log.info("Day result requested for user id: {}", userId);
-        return ResponseEntity.ok().build();
+    @GetMapping("/user/{userId}/product/{productId}")
+    public ResponseEntity<GatherDto> getDayResult(@PathVariable long userId, @PathVariable long productId) {
+        log.info("Day result requested for user id={} and productId={}", userId, productId);
+        GatherDto dayResults = gatherReportService.getDayResults(userId, productId);
+        return ResponseEntity.ok(dayResults);
     }
 }
