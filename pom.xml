@@ -75,8 +75,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
+          <source>17</source>
+          <target>17</target>
           <annotationProcessorPaths>
             <path>
               <artifactId>mapstruct-processor</artifactId>
@@ -94,6 +94,7 @@
               <version>${version.mapstruct-lombok}</version>
             </path>
           </annotationProcessorPaths>
+          <compilerArgs>--enable-preview</compilerArgs>
         </configuration>
       </plugin>
       <plugin>
