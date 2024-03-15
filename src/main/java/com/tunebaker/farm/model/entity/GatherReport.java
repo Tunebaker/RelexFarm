@@ -1,7 +1,7 @@
 package com.tunebaker.farm.model.entity;
 
-import com.tunebaker.farm.model.enums.ActivityStatus;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,10 +21,10 @@ public class GatherReport {
     private Long id;
     private LocalDateTime dateTime;
     private Float quantity;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 }

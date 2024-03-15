@@ -5,14 +5,14 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class GatherDto {
+public class GatherResponseDto {
     private final long productId;
     private final long userId;
-    private final double quantity;
+    private final double sum;
 
-    public GatherDto(long productId, long userId, double quantity) {
+    public GatherResponseDto(long productId, long userId, double sum) {
         this.productId = productId;
         this.userId = userId;
-        this.quantity = quantity;
+        this.sum = sum;
     }
 }

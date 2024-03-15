@@ -1,7 +1,8 @@
 package com.tunebaker.farm.controller;
 
-import com.tunebaker.farm.model.dto.GatherDto;
+import com.tunebaker.farm.model.dto.GatherResponseDto;
 import com.tunebaker.farm.model.dto.GatherReportDto;
+import com.tunebaker.farm.model.dto.StatReqDto;
 import com.tunebaker.farm.service.GatherReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/gather-report")
 @RequiredArgsConstructor
@@ -27,15 +30,23 @@ public class GatherReportController {
     @PostMapping("/add")
     public ResponseEntity<?> addReport(@RequestBody GatherReportDto gatherReportDto) {
         log.info("GatherReportDto received: {}", gatherReportDto);
-        GatherDto gatherDto = gatherReportService.postGatherReport(gatherReportDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(gatherDto);
+        GatherResponseDto gatherResponseDto = gatherReportService.postGatherReport(gatherReportDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(gatherResponseDto);
     }
 
-    @PreAuthorize("hasAnyRole('WORKER', 'ADMIN')")
-    @GetMapping("/user/{userId}/product/{productId}")
-    public ResponseEntity<GatherDto> getDayResult(@PathVariable long userId, @PathVariable long productId) {
-        log.info("Day result requested for user id={} and productId={}", userId, productId);
-        GatherDto dayResults = gatherReportService.getDayResults(userId, productId);
-        return ResponseEntity.ok(dayResults);
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/")
+    public ResponseEntity<List<GatherReportDto>> getStat(@RequestBody StatReqDto statReqDto) {
+        List<GatherReportDto> stat = gatherReportService.getStat(statReqDto.getPeriod(), statReqDto.getProductId());
+        return ResponseEntity.ok(stat);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<GatherReportDto>> getStatByUser(@RequestBody StatReqDto statReqDto,
+                                                               @PathVariable long userId) {
+        List<GatherReportDto> stat = gatherReportService.getStatByUser(
+                statReqDto.getPeriod(), statReqDto.getProductId(), userId);
+        return ResponseEntity.ok(stat);
     }
 }

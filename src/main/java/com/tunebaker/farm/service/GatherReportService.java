@@ -1,9 +1,16 @@
 package com.tunebaker.farm.service;
 
-import com.tunebaker.farm.model.dto.GatherDto;
+import com.tunebaker.farm.model.dto.GatherResponseDto;
 import com.tunebaker.farm.model.dto.GatherReportDto;
+import com.tunebaker.farm.util.time.Period;
+
+import java.util.List;
 
 public interface GatherReportService {
-    GatherDto postGatherReport(GatherReportDto gatherReportDto);
-    GatherDto getDayResults(Long userId, Long productId);
+    GatherResponseDto postGatherReport(GatherReportDto gatherReportDto);
+
+    List<GatherReportDto> getStat(Period period, Long productId);
+
+    List<GatherReportDto> getStatByUser(Period period, Long productId, Long userId);
+
 }

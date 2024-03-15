@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface GatherReportRepository extends JpaRepository<GatherReport, Long> {
     List<GatherReport> findByUserIdAndProductId(Long userId, Long productId);
+    List<GatherReport> findByProductId(Long productId);
 }
