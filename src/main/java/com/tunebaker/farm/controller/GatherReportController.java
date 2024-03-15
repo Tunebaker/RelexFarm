@@ -37,7 +37,7 @@ public class GatherReportController {
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<GatherReportDto>> getStat(@RequestBody StatReqDto statReqDto) {
-        List<GatherReportDto> stat = gatherReportService.getStat(statReqDto.getPeriod(), statReqDto.getProductId());
+        List<GatherReportDto> stat = gatherReportService.getStat(statReqDto);
         return ResponseEntity.ok(stat);
     }
 
@@ -45,8 +45,21 @@ public class GatherReportController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<GatherReportDto>> getStatByUser(@RequestBody StatReqDto statReqDto,
                                                                @PathVariable long userId) {
-        List<GatherReportDto> stat = gatherReportService.getStatByUser(
-                statReqDto.getPeriod(), statReqDto.getProductId(), userId);
+        List<GatherReportDto> stat = gatherReportService.getStatByUser(statReqDto, userId);
         return ResponseEntity.ok(stat);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/sum")
+    public ResponseEntity<GatherResponseDto> getSum(@RequestBody StatReqDto statReqDto) {
+        GatherResponseDto sum = gatherReportService.getSum(statReqDto);
+        return ResponseEntity.ok(sum);
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/sum/user/{userId}")
+    public ResponseEntity<GatherResponseDto> getSumByUser(@RequestBody StatReqDto statReqDto, @PathVariable long userId) {
+        GatherResponseDto sumByUser = gatherReportService.getSumByUser(statReqDto, userId);
+        return ResponseEntity.ok(sumByUser);
     }
 }
