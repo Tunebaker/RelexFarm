@@ -1,6 +1,7 @@
 package com.tunebaker.farm.controller;
 
 import com.tunebaker.farm.model.dto.WorkerRatingDto;
+import com.tunebaker.farm.model.dto.WorkerRatingResponseDto;
 import com.tunebaker.farm.service.WorkerRatingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -43,9 +44,9 @@ public class WorkerRatingController {
                description = "Возвращает список оценок, присвоенных работнику")
     @PreAuthorize("hasAnyRole('WORKER', 'ADMIN')")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<WorkerRatingDto>> getRating(@PathVariable long userId) {
+    public ResponseEntity<List<WorkerRatingResponseDto>> getRating(@PathVariable long userId) {
         log.info("Rating requested for user id={}", userId);
-        List<WorkerRatingDto> workerRatingDtos = workerRatingService.getRating(userId);
+        List<WorkerRatingResponseDto> workerRatingDtos = workerRatingService.getRating(userId);
         return ResponseEntity.ok(workerRatingDtos);
     }
 }

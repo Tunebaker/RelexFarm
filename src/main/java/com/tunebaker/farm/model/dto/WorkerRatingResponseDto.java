@@ -1,18 +1,16 @@
 package com.tunebaker.farm.model.dto;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
+@RequiredArgsConstructor
 @ToString
-public class WorkerRatingDto {
+public class WorkerRatingResponseDto {
     private final float rating;
     private final long userId;
-
-    public WorkerRatingDto(float rating, long userId) {
-        this.rating = rating;
-        this.userId = userId;
-    }
+    private final LocalDateTime dateTime;
 }
