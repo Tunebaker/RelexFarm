@@ -1,9 +1,9 @@
 package com.tunebaker.farm.service;
 
 import com.tunebaker.farm.exception.NoDailyNormSetException;
+import com.tunebaker.farm.model.dto.GatherReportResponseDto;
 import com.tunebaker.farm.model.dto.GatherResponseDto;
 import com.tunebaker.farm.model.dto.GatherReportDto;
-import com.tunebaker.farm.model.dto.StatReqDto;
 import com.tunebaker.farm.model.entity.DailyNorm;
 import com.tunebaker.farm.model.entity.GatherReport;
 import com.tunebaker.farm.model.mapper.GatherReportMapper;
@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.tunebaker.farm.util.time.TimeUtil.getEnd;
@@ -35,7 +36,7 @@ public class GatherReportServiceImpl implements GatherReportService {
 
         long userId = gatherReportDto.getUserId();
         long productId = gatherReportDto.getProductId();
-        double todaySum = getTodaySumByUser(productId, userId);
+        double todaySum = getTodayUserSum(productId, userId);
 
         DailyNorm dailyNorm = dailyNormRepository.findAnyByUserIdAndProductId(userId, productId)
                                                  .orElseThrow(() -> new NoDailyNormSetException(
@@ -45,45 +46,46 @@ public class GatherReportServiceImpl implements GatherReportService {
     }
 
     @Override
-    public List<GatherReportDto> getStat(StatReqDto statReqDto) {
-        Long productId = statReqDto.getProductId();
-        return gatherReportRepository.findByProductIdAndDateTimeBetween(productId, getStart(statReqDto),
-                getEnd(statReqDto))
+    public List<GatherReportResponseDto> getFarmStat(Period period, LocalDate periodStart, Long productId) {
+        LocalDateTime startDateTime = getStart(periodStart);
+        LocalDateTime endDateTime = getEnd(period, periodStart);
+        return gatherReportRepository.findByProductIdAndDateTimeBetween(productId, startDateTime, endDateTime)
                                      .stream()
-                                     .map(mapper::toGatherReportDto)
+                                     .map(mapper::toGatherReportResponseDto)
                                      .toList();
     }
 
+
     @Override
-    public List<GatherReportDto> getStatByUser(StatReqDto statReqDto, Long userId) {
-        Long productId = statReqDto.getProductId();
-        return gatherReportRepository.findByUserIdAndProductIdAndDateTimeBetween(userId, productId, getStart(statReqDto),
-                                             getEnd(statReqDto))
+    public List<GatherReportResponseDto> getUserStat(Period period, LocalDate periodStart, Long productId,
+                                                     Long userId) {
+        LocalDateTime startDateTime = getStart(periodStart);
+        LocalDateTime endDateTime = getEnd(period, periodStart);
+        return gatherReportRepository.findByUserIdAndProductIdAndDateTimeBetween(
+                userId, productId, startDateTime, endDateTime)
                                      .stream()
-                                     .map(mapper::toGatherReportDto)
+                                     .map(mapper::toGatherReportResponseDto)
                                      .toList();
     }
 
+
     @Override
-    public GatherResponseDto getSum(StatReqDto statReqDto) {
-        double sum = getStat(statReqDto).stream()
-                                             .mapToDouble(GatherReportDto::getQuantity)
-                                             .sum();
+    public GatherResponseDto getFarmSum(Period period, LocalDate periodStart, Long productId) {
+        double sum = getFarmStat(period, periodStart, productId).stream()
+                                                                .mapToDouble(GatherReportResponseDto::getQuantity)
+                                                                .sum();
         return new GatherResponseDto(sum);
     }
 
-    @Override
-    public GatherResponseDto getSumByUser(StatReqDto statReqDto, Long userId) {
-        double sum = getStatByUser(statReqDto, userId).stream()
-                                              .mapToDouble(GatherReportDto::getQuantity)
-                                              .sum();
+    public GatherResponseDto getUserSum(Period period, LocalDate periodStart, Long productId, Long userId) {
+        double sum = getUserStat(period, periodStart, productId, userId)
+                .stream()
+                .mapToDouble(GatherReportResponseDto::getQuantity)
+                .sum();
         return new GatherResponseDto(sum);
     }
 
-    private double getTodaySumByUser(Long productId, Long userId) {
-        StatReqDto statReqForToday = new StatReqDto(Period.DAY, LocalDate.now(), productId);
-        return getStatByUser(statReqForToday, userId).stream()
-                                                     .mapToDouble(GatherReportDto::getQuantity)
-                                                     .sum();
+    private double getTodayUserSum(Long productId, Long userId) {
+        return getUserSum(Period.DAY, LocalDate.now(), productId, userId).getSum();
     }
 }

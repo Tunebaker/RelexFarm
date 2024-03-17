@@ -9,14 +9,12 @@ import java.time.LocalDateTime;
 @Data
 public class TimeUtil {
 
-    public static LocalDateTime getStart(StatReqDto statReqDto) {
-        LocalDate periodStart = statReqDto.getPeriodStart();
+    public static LocalDateTime getStart(LocalDate periodStart) {
         return periodStart.atStartOfDay();
     }
 
-    public static LocalDateTime getEnd(StatReqDto statReqDto) {
-        LocalDate periodStart = statReqDto.getPeriodStart();
-        switch (statReqDto.getPeriod()) {
+    public static LocalDateTime getEnd(Period period, LocalDate periodStart) {
+        switch (period) {
             case DAY -> {
                 return periodStart.plusDays(1).atStartOfDay();
             }
