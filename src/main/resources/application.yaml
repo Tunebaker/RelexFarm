@@ -1,5 +1,7 @@
 server:
   port: 8082
+api:
+  version: 1.0.0
 jwt:
   secret: ebon990erb098bre0
   lifetime: 72h

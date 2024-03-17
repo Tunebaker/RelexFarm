@@ -26,6 +26,7 @@ public class GatherReportController {
 
     private final GatherReportService gatherReportService;
 
+    @Operation(summary = "Добавление отчёта", description = "Добавляет новый отчёт о выработке продукта работником")
     @PreAuthorize("hasAnyRole('WORKER', 'ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<?> addReport(@RequestBody GatherReportDto gatherReportDto) {
@@ -34,6 +35,8 @@ public class GatherReportController {
         return ResponseEntity.status(HttpStatus.CREATED).body(gatherResponseDto);
     }
 
+    @Operation(summary = "Статистика отчётов в общем по ферме для одного вида продукции", description =
+            "Возвращает список отчётов в общем по ферме для конкретного вида продукции за заданный период")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<GatherReportDto>> getStat(@RequestBody StatReqDto statReqDto) {
@@ -41,6 +44,9 @@ public class GatherReportController {
         return ResponseEntity.ok(stat);
     }
 
+    @Operation(summary = "Статистика отчётов работника для одного вида продукции",
+               description = "Возвращает список отчётов конкретного работника для конкретного вида продукции " +
+                       "за заданный период")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<GatherReportDto>> getStatByUser(@RequestBody StatReqDto statReqDto,
@@ -49,6 +55,8 @@ public class GatherReportController {
         return ResponseEntity.ok(stat);
     }
 
+    @Operation(summary = "Суммарная выработка одного вида продукции по всей ферме",
+               description = "Возвращает суммарную выработку фермы конкретного вида продукции за заданный период")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/sum")
     public ResponseEntity<GatherResponseDto> getSum(@RequestBody StatReqDto statReqDto) {
@@ -56,6 +64,9 @@ public class GatherReportController {
         return ResponseEntity.ok(sum);
     }
 
+    @Operation(summary = "Суммарная выработка одного вида продукции одним работником ",
+               description = "Возвращает суммарную выработку конкретного пользователя для конкретного вида" +
+               " продукции за заданный период")
     @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/sum/user/{userId}")
     public ResponseEntity<GatherResponseDto> getSumByUser(@RequestBody StatReqDto statReqDto, @PathVariable long userId) {

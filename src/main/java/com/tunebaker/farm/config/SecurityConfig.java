@@ -33,15 +33,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf(AbstractHttpConfigurer::disable)
                    .cors(CorsConfigurer::disable)
-                   .authorizeHttpRequests(auth -> auth
-                                                      .requestMatchers(PATH_PREFIX + "/**").permitAll()
-//                                                      .requestMatchers(PATH_PREFIX + "/auth").permitAll()
-//                                                      .requestMatchers(PATH_PREFIX + "/manage-user/**").hasRole(ADMIN)
-//                                                      .requestMatchers(PATH_PREFIX + "/**/new").hasRole(ADMIN)
-//                                                      .requestMatchers(PATH_PREFIX + "/gather-report/add").hasRole(WORKER)
-                                                      )
-                   .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                   .build();
+//
+                   .authorizeRequests()
+                   .anyRequest().permitAll().and()
+//                   .authorizeHttpRequests(auth -> auth
+//                                                      .requestMatchers(
+////                                                              PATH_PREFIX +
+//                                                                      "/**").permitAll()
+////                                                      .requestMatchers( "/swagger-ui/").permitAll()
+//
+////                                                      .requestMatchers(PATH_PREFIX + "/auth").permitAll()
+////                                                      .requestMatchers(PATH_PREFIX + "/manage-user/**").hasRole(ADMIN)
+////                                                      .requestMatchers(PATH_PREFIX + "/**/new").hasRole(ADMIN)
+////                                                      .requestMatchers(PATH_PREFIX + "/gather-report/add").hasRole(WORKER)
+//                                                      )
+//                   .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+
+                   .build()
+                ;
     }
 
     @Bean
