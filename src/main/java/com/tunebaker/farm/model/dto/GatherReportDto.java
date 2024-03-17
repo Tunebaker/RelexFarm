@@ -10,13 +10,11 @@ import java.time.LocalDateTime;
 public class GatherReportDto {
     private final long productId;
     private final long userId;
-    private final LocalDateTime dateTime;
     private final float quantity;
 
     public GatherReportDto(long productId, long userId, float quantity) {
         this.productId = productId;
         this.userId = userId;
         this.quantity = quantity;
-        this.dateTime = LocalDateTime.now();
     }
 }
