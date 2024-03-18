@@ -12,4 +12,6 @@ public interface GatherReportRepository extends JpaRepository<GatherReport, Long
     List<GatherReport> findByUserIdAndProductIdAndDateTimeBetween(Long userId, Long productId, LocalDateTime start,
                                                                   LocalDateTime end);
     List<GatherReport> findByProductIdAndDateTimeBetween(Long productId, LocalDateTime start, LocalDateTime end);
+
+    List<GatherReport> findByDateTimeBetween(LocalDateTime start, LocalDateTime end);
 }

@@ -6,6 +6,7 @@ import com.tunebaker.farm.model.dto.GatherResponseDto;
 import com.tunebaker.farm.model.dto.GatherReportDto;
 import com.tunebaker.farm.model.entity.DailyNorm;
 import com.tunebaker.farm.model.entity.GatherReport;
+import com.tunebaker.farm.model.entity.Product;
 import com.tunebaker.farm.model.mapper.GatherReportMapper;
 import com.tunebaker.farm.repository.DailyNormRepository;
 import com.tunebaker.farm.repository.GatherReportRepository;
@@ -16,7 +17,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.tunebaker.farm.util.time.TimeUtil.getEnd;
 import static com.tunebaker.farm.util.time.TimeUtil.getStart;
@@ -61,11 +66,8 @@ public class GatherReportServiceImpl implements GatherReportService {
                                                      Long userId) {
         LocalDateTime startDateTime = getStart(periodStart);
         LocalDateTime endDateTime = getEnd(period, periodStart);
-        return gatherReportRepository.findByUserIdAndProductIdAndDateTimeBetween(
-                userId, productId, startDateTime, endDateTime)
-                                     .stream()
-                                     .map(mapper::toGatherReportResponseDto)
-                                     .toList();
+        return gatherReportRepository.findByUserIdAndProductIdAndDateTimeBetween(userId, productId, startDateTime,
+                endDateTime).stream().map(mapper::toGatherReportResponseDto).toList();
     }
 
 
@@ -77,15 +79,37 @@ public class GatherReportServiceImpl implements GatherReportService {
         return new GatherResponseDto(sum);
     }
 
+    @Override
     public GatherResponseDto getUserSum(Period period, LocalDate periodStart, Long productId, Long userId) {
-        double sum = getUserStat(period, periodStart, productId, userId)
-                .stream()
-                .mapToDouble(GatherReportResponseDto::getQuantity)
-                .sum();
+        double sum = getUserStat(period, periodStart, productId, userId).stream()
+                                                                        .mapToDouble(
+                                                                                GatherReportResponseDto::getQuantity)
+                                                                        .sum();
         return new GatherResponseDto(sum);
     }
 
+
+    @Override
+    public Map<Product, Float> generateReport() {
+
+        LocalDate currentDate = LocalDate.now();
+        List<GatherReport> filteredReports = gatherReportRepository.findByDateTimeBetween(currentDate.atStartOfDay(),
+                currentDate.atTime(LocalTime.MAX));
+
+        Map<Product, Float> groupedReports = filteredReports.stream()
+                                                            .collect(Collectors.groupingBy(GatherReport::getProduct,
+                                                                    Collectors.summingDouble(
+                                                                            GatherReport::getQuantity)))
+                                                            .entrySet()
+                                                            .stream()
+                                                            .collect(Collectors.toMap(Map.Entry::getKey,
+                                                                    entry -> entry.getValue().floatValue()));
+
+        return new HashMap<>(groupedReports);
+    }
+
+
     private double getTodayUserSum(Long productId, Long userId) {
-        return getUserSum(Period.DAY, LocalDate.now(), productId, userId).getSum();
+        return getUserSum(Period.DAY, LocalDate.now(), productId, userId).getQuantity();
     }
 }

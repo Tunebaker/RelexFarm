@@ -8,5 +8,5 @@ import lombok.ToString;
 @ToString
 @RequiredArgsConstructor
 public class GatherResponseDto {
-    private final double sum;
+    private final double quantity;
 }

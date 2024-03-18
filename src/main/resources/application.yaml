@@ -22,4 +22,19 @@ spring:
   liquibase:
     change-log: db/changelog/db.changelog-master.xml
     default-schema: public
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+    username: developer.a812@gmail.com
+    password: luuqiiafmgsptinq
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: topic-1
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    producer:
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
