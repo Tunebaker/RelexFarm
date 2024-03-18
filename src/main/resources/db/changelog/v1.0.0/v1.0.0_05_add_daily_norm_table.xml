@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+  <changeSet id="v1.0.0_05_add_daily_norm_table" author="Andrey Gurinov" >
+    <createTable tableName="daily_norm" schemaName="data">
+      <column name="id" autoIncrement="true" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="product_id" type="bigint"/>
+      <column name="user_id" type="bigint"/>
+      <column name="norm" type="float"/>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>

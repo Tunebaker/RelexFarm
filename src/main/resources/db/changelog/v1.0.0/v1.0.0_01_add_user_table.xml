@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+  <changeSet id="v1.0.0_01_add_user_table" author="Andrey Gurinov">
+    <createTable tableName="user" schemaName="data">
+      <column name="id" autoIncrement="true" type="bigint">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="first_name" type="varchar(50)"/>
+      <column name="middle_name" type="varchar(50)"/>
+      <column name="last_name" type="varchar(50)"/>
+      <column name="email" type="varchar(255)"/>
+      <column name="password" type="varchar(30)"/>
+      <column name="role_id" type="int"/>
+      <column name="status" type="varchar(30)"/>
+    </createTable>
+  </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd">
+
+  <changeSet id="v1.0.0_08_prefill_role_table" author="Andrey Gurinov">
+    <insert tableName="role" schemaName="data">
+      <column name="name" value="ADMIN"/>
+    </insert>
+    <insert tableName="role" schemaName="data">
+      <column name="name" value="WORKER"/>
+    </insert>
+  </changeSet>
+
+</databaseChangeLog>
